@@ -1,0 +1,33 @@
+name: Atualizar Mega Sena Diariamente
+
+on:
+  schedule:
+    # Roda todos os dias às 21:00 UTC (18:00 no Brasil)
+    - cron: '0 21 * * *'
+  workflow_dispatch: # Permite rodar manualmente clicando num botão
+
+jobs:
+  atualizar-dados:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Baixar código do repositório
+      uses: actions/checkout@v3
+
+    - name: Instalar Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Instalar ferramentas (Axios e XLSX)
+      run: npm install axios xlsx
+
+    - name: Rodar script de atualização
+      run: node atualizar.js
+
+    - name: Salvar alterações (Commit e Push)
+      run: |
+        git config --global user.name 'Robo Atualizador'
+        git config --global user.email 'robo@github.com'
+        git add resultados.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Atualização automática dos resultados" && git push)
