@@ -1,0 +1,107 @@
+/* Reset básico para remover margens padrão */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ocupa a altura total da tela */
+    padding: 20px;
+}
+
+.container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 600px; /* Limita a largura em telas grandes */
+}
+
+h1 {
+    color: #209869; /* Verde Mega-Sena */
+    margin-bottom: 10px;
+}
+
+.instrucao {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Container das caixinhas de input */
+.inputs-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    flex-wrap: wrap; /* Permite que quebre linha em telas muito pequenas */
+}
+
+.numero-input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.5rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+/* Quando clicar na caixa, ela fica verde */
+.numero-input:focus {
+    border-color: #209869;
+}
+
+/* Botão Verde */
+#btn-conferir {
+    background-color: #28a745; /* Verde Sucesso */
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    max-width: 250px;
+}
+
+#btn-conferir:hover {
+    background-color: #218838;
+}
+
+/* Área de resultados */
+.resultado-area {
+    margin-top: 25px;
+    text-align: left;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    display: none; /* Escondido inicialmente */
+    border-left: 5px solid #ccc;
+}
+
+/* Classes utilitárias para mensagens de sucesso ou aviso */
+.resultado-area.ja-sorteado {
+    border-left-color: #dc3545; /* Vermelho */
+    background-color: #fff5f5;
+}
+
+.resultado-area.nunca-sorteado {
+    border-left-color: #28a745; /* Verde */
+    background-color: #e6ffed;
+}
+
+.resultado-area p {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}

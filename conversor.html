@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Conversor Excel Forçado</title>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; background-color: #f4f4f4; text-align: center;}
+        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; }
+        textarea { width: 100%; height: 300px; margin-top: 20px; border: 1px solid #ccc; padding: 10px; font-family: monospace; font-size: 12px; }
+        input[type="file"] { margin: 20px 0; padding: 10px; border: 1px dashed #aaa; width: 100%; box-sizing: border-box;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Conversor Mega-Sena (Modo Forçado)</h1>
+        <p>Selecione o arquivo <strong>Mega-Sena.xlsx</strong>.</p>
+        
+        <input type="file" id="fileInput" accept=".xlsx, .xls">
+        
+        <div id="status" style="margin-top: 10px; font-weight: bold; color: #555;">Aguardando arquivo...</div>
+        
+        <textarea id="output" placeholder="O JSON aparecerá aqui..."></textarea>
+    </div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            document.getElementById('status').innerText = "Processando... aguarde.";
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+                    // AQUI ESTÁ A CORREÇÃO: Forçamos a leitura da linha 1 até a 5000
+                    // Ignoramos o que o arquivo diz ser o "fim" da planilha
+                    const dadosBrutos = XLSX.utils.sheet_to_json(worksheet, { 
+                        header: 1, 
+                        range: "A1:T5000", // Força leitura até a linha 5000
+                        defval: "" 
+                    });
+
+                    processarDados(dadosBrutos);
+                } catch (erro) {
+                    alert("Erro fatal: " + erro.message);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        function processarDados(dados) {
+            const resultados = [];
+
+            for (let i = 0; i < dados.length; i++) {
+                const linha = dados[i];
+                // Pega a primeira coluna (Concurso)
+                const concursoRaw = linha[0]; 
+                const concurso = parseInt(concursoRaw);
+
+                // Só aceita se a primeira coluna for um número válido
+                if (!isNaN(concurso) && concurso > 0) {
+                    
+                    // Tratamento de Data (Coluna B / Indice 1)
+                    let dataFormatada = "00/00/0000";
+                    const valorData = linha[1];
+
+                    if (typeof valorData === 'number') {
+                        const dateObj = new Date(Math.round((valorData - 25569) * 86400 * 1000));
+                        dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset());
+                        dataFormatada = dateObj.toLocaleDateString('pt-BR');
+                    } else if (typeof valorData === 'string') {
+                        dataFormatada = valorData.trim();
+                    }
+
+                    // Verifica se as colunas de bola existem (Índices 2 a 7)
+                    if (linha[2] != undefined) {
+                        const dezenas = [
+                            fmt(linha[2]), fmt(linha[3]), fmt(linha[4]),
+                            fmt(linha[5]), fmt(linha[6]), fmt(linha[7])
+                        ];
+
+                        resultados.push({
+                            concurso: concurso,
+                            data: dataFormatada,
+                            dezenas: dezenas
+                        });
+                    }
+                }
+            }
+
+            if (resultados.length > 0) {
+                const jsonFinal = JSON.stringify(resultados);
+                document.getElementById('output').value = jsonFinal;
+                document.getElementById('status').innerText = `SUCESSO! ${resultados.length} concursos recuperados.`;
+                alert(`Consegui recuperar ${resultados.length} concursos! Copie o código.`);
+            } else {
+                document.getElementById('status').innerText = "Ainda sem resultados. O arquivo pode estar vazio ou criptografado.";
+            }
+        }
+
+        function fmt(val) {
+            return String(val).trim().padStart(2, '0');
+        }
+    </script>
+</body>
+</html>
