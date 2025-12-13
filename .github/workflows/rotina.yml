@@ -1,10 +1,14 @@
-name: Atualizar Mega Sena Diariamente
+name: Atualizar Mega Sena (Ter/Qui/Sab)
 
 on:
   schedule:
-    # Roda todos os dias às 21:00 UTC (18:00 no Brasil)
-    - cron: '0 21 * * *'
-  workflow_dispatch: # Permite rodar manualmente clicando num botão
+    # Explicação do Cron:
+    # Minuto 0, Hora 2 (UTC) = 23h do dia anterior no Brasil
+    # Dias: 0=Domingo, 3=Quarta, 5=Sexta (Dias seguintes aos sorteios)
+    - cron: '0 2 * * 0,3,5'
+  
+  # Mantemos o gatilho manual caso você queira forçar uma atualização
+  workflow_dispatch:
 
 jobs:
   atualizar-dados:
@@ -25,9 +29,11 @@ jobs:
     - name: Rodar script de atualização
       run: node atualizar.js
 
-    - name: Salvar alterações (Commit e Push)
+    - name: Salvar alterações
       run: |
         git config --global user.name 'Robo Atualizador'
         git config --global user.email 'robo@github.com'
-        git add resultados.json
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Atualização automática dos resultados" && git push)
+        # Adiciona tudo o que mudou
+        git add .
+        # Só faz o commit se houver mudança real no arquivo
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Atualização pós-sorteio" && git push)
