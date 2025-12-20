@@ -156,4 +156,69 @@ function exibirResultado(sena, quinas, quadras, ternos) {
         <p>• 4 acertos (Quadra): <strong>${quadras.length}</strong> vezes.</p>
         <p>• 3 acertos (Terno): <strong>${ternos.length}</strong> vezes.</p>
     `;
+    // Função para calcular os números mais frequentes
+function obterNumerosQuentes() {
+    const contagem = {};
+    
+    // Zera a contagem para todos os números de 01 a 60
+    for (let i = 1; i <= 60; i++) {
+        const numStr = i.toString().padStart(2, '0');
+        contagem[numStr] = 0;
+    }
+
+    // Conta quantas vezes cada número saiu na história
+    window.dadosMega.forEach(sorteio => {
+        sorteio.dezenas.forEach(dezena => {
+            if (contagem[dezena] !== undefined) {
+                contagem[dezena]++;
+            }
+        });
+    });
+
+    // Transforma em array e ordena do mais sorteado para o menos sorteado
+    const ordenados = Object.keys(contagem).sort((a, b) => contagem[b] - contagem[a]);
+    
+    // Retorna os top 15 números mais quentes para misturar
+    return ordenados.slice(0, 15);
+}
+
+// Função Principal do Gerador
+function gerarPalpite(tipo) {
+    const area = document.getElementById('palpite-area');
+    let numerosEscolhidos = [];
+
+    if (tipo === 'aleatorio') {
+        // Gera 6 números totalmente aleatórios
+        while (numerosEscolhidos.length < 6) {
+            const num = Math.floor(Math.random() * 60) + 1;
+            const numStr = num.toString().padStart(2, '0');
+            if (!numerosEscolhidos.includes(numStr)) {
+                numerosEscolhidos.push(numStr);
+            }
+        }
+    } else if (tipo === 'quente') {
+        // Pega os top 15 mais frequentes e sorteia 6 entre eles
+        const quentes = obterNumerosQuentes();
+        while (numerosEscolhidos.length < 6) {
+            const indiceAleatorio = Math.floor(Math.random() * quentes.length);
+            const numEscolhido = quentes[indiceAleatorio];
+            
+            if (!numerosEscolhidos.includes(numEscolhido)) {
+                numerosEscolhidos.push(numEscolhido);
+            }
+        }
+    }
+
+    // Ordena (crescente) e exibe
+    numerosEscolhidos.sort((a, b) => a - b);
+    
+    const texto = tipo === 'quente' ? "🔥 Palpite Quente: " : "🎲 Surpresinha: ";
+    
+    area.innerHTML = `
+        <span style="font-size: 0.9rem; color: #888; display: block; margin-bottom: 5px;">${texto}</span>
+        <span style="color: #27ae60; background: #e8f5e9; padding: 5px 15px; border-radius: 20px; border: 1px solid #c8e6c9;">
+            ${numerosEscolhidos.join(' - ')}
+        </span>
+    `;
+}
 }
