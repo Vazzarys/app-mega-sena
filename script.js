@@ -4,7 +4,8 @@ const btnConferir = document.getElementById('btn-conferir');
 const resultadoArea = document.getElementById('resultado');
 
 // Variável global para guardar os jogos na memória
-let bancoDeResultados = null;
+// Vamos usar window.dadosMega para garantir que todos acessem
+window.dadosMega = null; 
 
 // --- 1. Configuração dos Campos e Carregamento Inicial ---
 
@@ -14,7 +15,7 @@ window.addEventListener('load', async () => {
     // OTIMIZAÇÃO: Baixa os dados assim que a página abre
     try {
         const resposta = await fetch('resultados.json');
-        bancoDeResultados = await resposta.json();
+        window.dadosMega = await resposta.json(); // <--- CORREÇÃO AQUI
         console.log("Banco de dados carregado com sucesso!");
     } catch (erro) {
         console.error("Erro ao carregar dados:", erro);
@@ -98,13 +99,13 @@ btnConferir.addEventListener('click', () => {
     }
 
     // Verifica se o banco já carregou
-    if (!bancoDeResultados) {
+    if (!window.dadosMega) {
         alert("Os dados ainda estão carregando... aguarde um instante e tente novamente.");
         return;
     }
 
     // Executa a conferência
-    realizarConferencia(numerosUsuario, bancoDeResultados);
+    realizarConferencia(numerosUsuario, window.dadosMega);
 });
 
 function realizarConferencia(meusNumeros, todosResultados) {
@@ -156,8 +157,15 @@ function exibirResultado(sena, quinas, quadras, ternos) {
         <p>• 4 acertos (Quadra): <strong>${quadras.length}</strong> vezes.</p>
         <p>• 3 acertos (Terno): <strong>${ternos.length}</strong> vezes.</p>
     `;
-    // Função para calcular os números mais frequentes
+} // <--- AQUI ERA O ERRO: Faltava fechar essa chave antes de começar as novas funções!
+
+// --- 3. Novas Funções (Gerador de Palpites) ---
+
+// Função para calcular os números mais frequentes
 function obterNumerosQuentes() {
+    // Proteção: se os dados não existirem, retorna vazio
+    if (!window.dadosMega) return [];
+
     const contagem = {};
     
     // Zera a contagem para todos os números de 01 a 60
@@ -187,6 +195,12 @@ function gerarPalpite(tipo) {
     const area = document.getElementById('palpite-area');
     let numerosEscolhidos = [];
 
+    // Verifica se os dados carregaram antes de tentar gerar
+    if (tipo === 'quente' && !window.dadosMega) {
+        alert("Aguarde o carregamento dos dados!");
+        return;
+    }
+
     if (tipo === 'aleatorio') {
         // Gera 6 números totalmente aleatórios
         while (numerosEscolhidos.length < 6) {
@@ -199,6 +213,10 @@ function gerarPalpite(tipo) {
     } else if (tipo === 'quente') {
         // Pega os top 15 mais frequentes e sorteia 6 entre eles
         const quentes = obterNumerosQuentes();
+        
+        // Se der erro ao pegar quentes, evita loop infinito
+        if (quentes.length === 0) return;
+
         while (numerosEscolhidos.length < 6) {
             const indiceAleatorio = Math.floor(Math.random() * quentes.length);
             const numEscolhido = quentes[indiceAleatorio];
@@ -220,5 +238,4 @@ function gerarPalpite(tipo) {
             ${numerosEscolhidos.join(' - ')}
         </span>
     `;
-}
 }
