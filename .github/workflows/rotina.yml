@@ -5,7 +5,7 @@ on:
     # Explicação do Cron:
     # Minuto 0, Hora 2 (UTC) = 23h do dia anterior no Brasil
     # Dias: 0=Domingo, 3=Quarta, 5=Sexta (Dias seguintes aos sorteios)
-    - cron: '0 2 * * 0,3,5'
+    - cron: '0 9 * * 1,3,5'
   
   # Mantemos o gatilho manual caso você queira forçar uma atualização
   workflow_dispatch:
