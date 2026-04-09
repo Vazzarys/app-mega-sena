@@ -1,13 +1,8 @@
-name: Atualizar Mega Sena (Ter/Qui/Sab)
+name: Atualizar Mega Sena
 
 on:
   schedule:
-    # Explicação do Cron:
-    # Minuto 0, Hora 2 (UTC) = 23h do dia anterior no Brasil
-    # Dias: 0=Domingo, 3=Quarta, 5=Sexta (Dias seguintes aos sorteios)
     - cron: '0 9 * * 1,3,5'
-  
-  # Mantemos o gatilho manual caso você queira forçar uma atualização
   workflow_dispatch:
 
 jobs:
@@ -15,25 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Baixar código do repositório
-      uses: actions/checkout@v3
+      - name: Baixar código do repositório
+        uses: actions/checkout@v4
 
-    - name: Instalar Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Instalar ferramentas (Axios e XLSX)
-      run: npm install axios xlsx
+      - name: Instalar dependências
+        run: npm install
 
-    - name: Rodar script de atualização
-      run: node atualizar.js
+      - name: Rodar script de atualização
+        run: node atualizar.js
 
-    - name: Salvar alterações
-      run: |
-        git config --global user.name 'Robo Atualizador'
-        git config --global user.email 'robo@github.com'
-        # Adiciona tudo o que mudou
-        git add .
-        # Só faz o commit se houver mudança real no arquivo
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Atualização pós-sorteio" && git push)
+      - name: Salvar alterações
+        run: |
+          git config --global user.name "Robo Atualizador"
+          git config --global user.email "robo@github.com"
+          git add resultados.json
+          git diff --cached --quiet || (git commit -m "Atualização automática Mega-Sena" && git push)
