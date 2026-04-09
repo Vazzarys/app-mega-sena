@@ -105,3 +105,64 @@ h1 {
     font-size: 0.95rem;
     line-height: 1.5;
 }
+
+main.container {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+main.container section {
+  background: #fff;
+  margin-bottom: 20px;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+main.container h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+nav a {
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: 30px;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f1f3f6;
+  color: #222;
+}
+
+header {
+  text-align: center;
+  padding: 30px 20px 10px;
+}
+
+header h1 {
+  margin: 0 0 10px 0;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: 30px;
+}
