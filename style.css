@@ -295,3 +295,31 @@ body.pagina-interna footer {
     line-height: 1.5;
   }
 }
+
+.menu-home {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px 18px;
+}
+
+.menu-home a {
+  color: #27ae60;
+  text-decoration: none;
+}
+
+@media (max-width: 480px) {
+  .menu-home {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .menu-home a {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+  }
+}
