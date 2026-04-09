@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados e histórico | Consulta Mega</title>
+  <meta name="description" content="Consulte resultados recentes e o histórico da Mega-Sena no Consulta Mega.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="pagina-interna">
+  <header>
+    <h1>Consulta Mega</h1>
+    <nav>
+      <a href="index.html">Início</a>
+      <a href="sobre.html">Sobre</a>
+      <a href="contato.html">Contato</a>
+      <a href="como-conferir.html">Como conferir sua aposta</a>
+      <a href="historico.html">Resultados e histórico</a>
+      <a href="politica.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>Resultados e histórico da Mega-Sena</h2>
+      <p>
+        Nesta página você poderá acompanhar os concursos mais recentes da Mega-Sena e consultar
+        informações históricas para análise e conferência.
+      </p>
+      <p>
+        Os dados exibidos no Consulta Mega são atualizados periodicamente com base em informações
+        públicas disponibilizadas pela Caixa.
+      </p>
+    </section>
+
+    <section>
+      <h2>Consulta rápida</h2>
+      <p>
+        Para verificar se um número já foi sorteado, utilize a ferramenta disponível na página inicial
+        do site.
+      </p>
+      <p>
+        Para conferência oficial de concursos e premiações, consulte sempre os canais oficiais da Caixa.
+      </p>
+    </section>
+
+    <section>
+      <h2>Últimos resultados</h2>
+      <div id="ultimos-resultados">
+        <p>Carregando resultados...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Consulta Mega. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    async function carregarResultados() {
+      try {
+        const resposta = await fetch('resultados.json');
+        const dados = await resposta.json();
+
+        const container = document.getElementById('ultimos-resultados');
+        const ultimos = dados.slice(-10).reverse();
+
+        container.innerHTML = ultimos.map(item => `
+          <div class="resultado-card">
+            <h3>Concurso ${item.concurso}</h3>
+            <p><strong>Data:</strong> ${item.data || 'Não informada'}</p>
+            <p><strong>Dezenas:</strong> ${item.dezenas.join(' - ')}</p>
+          </div>
+        `).join('');
+      } catch (erro) {
+        document.getElementById('ultimos-resultados').innerHTML =
+          '<p>Não foi possível carregar os resultados no momento.</p>';
+      }
+    }
+
+    carregarResultados();
+  </script>
+</body>
+</html>
