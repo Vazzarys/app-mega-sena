@@ -425,3 +425,100 @@ body.pagina-interna .blog-post .post-image figcaption {
   line-height: 1.6;
   color: #666;
 }
+
+.bloco-blog-home {
+  margin-top: 35px;
+  margin-bottom: 30px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbf8 100%);
+  border: 1px solid #e7efe7;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.bloco-blog-home-topo {
+  margin-bottom: 18px;
+}
+
+.bloco-blog-home-tag {
+  display: inline-block;
+  background: #eaf7ee;
+  color: #1f8f4d;
+  font-size: 0.85rem;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.bloco-blog-home-topo h3 {
+  margin: 0 0 10px 0;
+  color: #222;
+  font-size: 1.5rem;
+}
+
+.bloco-blog-home-topo p {
+  margin: 0;
+  line-height: 1.7;
+  color: #444;
+}
+
+.bloco-blog-home-lista {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.bloco-blog-home-link {
+  display: block;
+  background: #fff;
+  border: 1px solid #e6ece6;
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: #1f8f4d;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.bloco-blog-home-link:hover {
+  background: #f4fbf6;
+  border-color: #cfe7d5;
+}
+
+.bloco-blog-home-rodape {
+  margin-top: 18px;
+}
+
+.bloco-blog-home-botao {
+  display: inline-block;
+  background: #27ae60;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 12px 18px;
+  border-radius: 10px;
+}
+
+.bloco-blog-home-botao:hover {
+  background: #219150;
+}
+
+@media (max-width: 768px) {
+  .bloco-blog-home {
+    padding: 18px;
+  }
+
+  .bloco-blog-home-topo h3 {
+    font-size: 1.3rem;
+  }
+
+  .bloco-blog-home-link {
+    padding: 12px 14px;
+  }
+
+  .bloco-blog-home-botao {
+    display: block;
+    text-align: center;
+  }
+}
