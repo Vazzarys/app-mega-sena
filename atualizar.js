@@ -2,6 +2,7 @@ const fs = require('fs');
 const axios = require('axios');
 
 const arquivoJson = 'resultados.json';
+const arquivoStatus = 'status-mega.json';
 
 const URLS = [
   'https://servicebus2.caixa.gov.br/portaldeloterias/api/megasena',
@@ -54,10 +55,31 @@ function normalizarResultado(data) {
     .map((n) => String(n).trim().padStart(2, '0'))
     .sort((a, b) => Number(a) - Number(b));
 
+  const acumulado = Boolean(data.acumulado);
+
+  const valorEstimadoProximoConcurso = Number(
+    data.valorEstimadoProximoConcurso || 0
+  );
+
+  const dataProximoConcurso = data.dataProximoConcurso || '';
+
+  const ganhadoresSena = Array.isArray(data.listaRateioPremio)
+    ? Number(data.listaRateioPremio.find((item) => item.descricaoFaixa === '6 acertos')?.numeroDeGanhadores || 0)
+    : 0;
+
+  const valorPremioSena = Array.isArray(data.listaRateioPremio)
+    ? Number(data.listaRateioPremio.find((item) => item.descricaoFaixa === '6 acertos')?.valorPremio || 0)
+    : 0;
+
   return {
     concurso,
     data: dataApuracao,
-    dezenas
+    dezenas,
+    acumulado,
+    valorEstimadoProximoConcurso,
+    dataProximoConcurso,
+    ganhadoresSena,
+    valorPremioSena
   };
 }
 
@@ -84,6 +106,10 @@ function salvarHistorico(dados) {
   fs.writeFileSync(arquivoJson, JSON.stringify(dados, null, 2), 'utf8');
 }
 
+function salvarStatusMega(status) {
+  fs.writeFileSync(arquivoStatus, JSON.stringify(status, null, 2), 'utf8');
+}
+
 async function atualizarResultados() {
   try {
     console.log('1. Carregando histórico atual...');
@@ -101,17 +127,28 @@ async function atualizarResultados() {
     );
 
     if (indiceExistente >= 0) {
-      historico[indiceExistente] = novoResultado;
-      console.log(`3. Concurso ${novoResultado.concurso} já existia e foi atualizado.`);
-    } else {
-      historico.push(novoResultado);
-      console.log(`3. Concurso ${novoResultado.concurso} adicionado ao histórico.`);
-    }
+  historico[indiceExistente] = novoResultado;
+  console.log(`3. Concurso ${novoResultado.concurso} já existia e foi atualizado.`);
+} else {
+  historico.push(novoResultado);
+  console.log(`3. Concurso ${novoResultado.concurso} adicionado ao histórico.`);
+}
 
-    historico.sort((a, b) => Number(a.concurso) - Number(b.concurso));
+historico.sort((a, b) => Number(a.concurso) - Number(b.concurso));
 
-    salvarHistorico(historico);
-    console.log(`4. Arquivo ${arquivoJson} salvo com sucesso.`);
+salvarHistorico(
+  historico.map((item) => ({
+    concurso: item.concurso,
+    data: item.data,
+    dezenas: item.dezenas
+  }))
+);
+
+console.log(`4. Arquivo ${arquivoJson} salvo com sucesso.`);
+
+salvarStatusMega(novoResultado);
+console.log(`5. Arquivo ${arquivoStatus} salvo com sucesso.`);
+
   } catch (erro) {
     console.error('Erro fatal:', erro.message);
     process.exit(1);

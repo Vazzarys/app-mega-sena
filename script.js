@@ -239,3 +239,67 @@ function gerarPalpite(tipo) {
         </span>
     `;
 }
+
+function formatarMoeda(valor) {
+    return Number(valor || 0).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
+}
+
+async function carregarStatusMega() {
+    const statusArea = document.getElementById('status-mega');
+
+    if (!statusArea) return;
+
+    try {
+        const resposta = await fetch('status-mega.json');
+
+        if (!resposta.ok) {
+            throw new Error('Não foi possível carregar o status da Mega-Sena.');
+        }
+
+        const status = await resposta.json();
+
+        const dezenasHtml = status.dezenas.map((dezena) => `
+            <span class="status-mega-dezena">${dezena}</span>
+        `).join('');
+
+        if (status.acumulado) {
+            statusArea.innerHTML = `
+                <h3>Acumulou!</h3>
+                <p><strong>Mega-Sena - Concurso ${status.concurso}</strong></p>
+                <p>Sorteio realizado em ${status.data}</p>
+
+                <div class="status-mega-dezenas">
+                    ${dezenasHtml}
+                </div>
+
+                <p>No próximo sorteio, a estimativa de prêmio é de:</p>
+                <h3>${formatarMoeda(status.valorEstimadoProximoConcurso)}</h3>
+                <p>Próximo concurso: ${status.dataProximoConcurso || 'data não informada'}</p>
+            `;
+        } else {
+            statusArea.innerHTML = `
+                <h3>Prêmio saiu!</h3>
+                <p><strong>Mega-Sena - Concurso ${status.concurso}</strong></p>
+                <p>Sorteio realizado em ${status.data}</p>
+
+                <div class="status-mega-dezenas">
+                    ${dezenasHtml}
+                </div>
+
+                <p>${status.ganhadoresSena} aposta(s) acertaram a Sena.</p>
+                <h3>${formatarMoeda(status.valorPremioSena)}</h3>
+            `;
+        }
+    } catch (erro) {
+        console.error('Erro ao carregar status da Mega-Sena:', erro);
+
+        statusArea.innerHTML = `
+            <p>Não foi possível carregar as informações do último sorteio no momento.</p>
+        `;
+    }
+}
+
+carregarStatusMega();

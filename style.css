@@ -522,3 +522,44 @@ body.pagina-interna .blog-post .post-image figcaption {
     text-align: center;
   }
 }
+
+.status-mega-card {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #0b74b8, #22b8a8);
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.status-mega-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.status-mega-card p {
+    margin: 6px 0;
+    line-height: 1.5;
+}
+
+.status-mega-dezenas {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+}
+
+.status-mega-dezena {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    color: #0b74b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
