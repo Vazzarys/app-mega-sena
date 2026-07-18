@@ -1,17 +1,17 @@
 {
-  "concurso": 3014,
-  "data": "02/06/2026",
+  "concurso": 3032,
+  "data": "16/07/2026",
   "dezenas": [
+    "08",
+    "12",
+    "23",
     "27",
-    "30",
-    "35",
-    "40",
-    "44",
-    "58"
+    "42",
+    "43"
   ],
   "acumulado": true,
-  "valorEstimadoProximoConcurso": 32000000,
-  "dataProximoConcurso": "06/06/2026",
+  "valorEstimadoProximoConcurso": 35000000,
+  "dataProximoConcurso": "18/07/2026",
   "ganhadoresSena": 0,
   "valorPremioSena": 0
 }
