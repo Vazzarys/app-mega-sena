@@ -28,5 +28,5 @@ jobs:
         run: |
           git config --global user.name "Robo Atualizador"
           git config --global user.email "robo@github.com"
-          git add resultados.json
+          git add resultados.json status-mega.json
           git diff --cached --quiet || (git commit -m "Atualização automática Mega-Sena" && git push)
