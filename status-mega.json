@@ -1,17 +1,17 @@
 {
-  "concurso": 3037,
-  "data": "28/07/2026",
+  "concurso": 3038,
+  "data": "30/07/2026",
   "dezenas": [
-    "02",
-    "11",
-    "22",
     "30",
-    "51",
-    "54"
+    "35",
+    "38",
+    "39",
+    "46",
+    "50"
   ],
   "acumulado": true,
-  "valorEstimadoProximoConcurso": 86000000,
-  "dataProximoConcurso": "30/07/2026",
+  "valorEstimadoProximoConcurso": 100000000,
+  "dataProximoConcurso": "01/08/2026",
   "ganhadoresSena": 0,
   "valorPremioSena": 0
 }
