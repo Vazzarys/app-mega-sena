@@ -1,17 +1,17 @@
 {
-  "concurso": 3042,
-  "data": "09/08/2026",
+  "concurso": 3043,
+  "data": "11/08/2026",
   "dezenas": [
-    "02",
-    "05",
     "10",
-    "35",
-    "40",
+    "11",
+    "16",
+    "37",
+    "42",
     "53"
   ],
   "acumulado": false,
   "valorEstimadoProximoConcurso": 3500000,
-  "dataProximoConcurso": "11/08/2026",
+  "dataProximoConcurso": "13/08/2026",
   "ganhadoresSena": 1,
-  "valorPremioSena": 164895645.5
+  "valorPremioSena": 3077413.08
 }
