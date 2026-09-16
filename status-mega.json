@@ -1,17 +1,17 @@
 {
-  "concurso": 3057,
-  "data": "13/09/2026",
+  "concurso": 3058,
+  "data": "15/09/2026",
   "dezenas": [
-    "02",
-    "04",
-    "16",
-    "21",
-    "48",
-    "53"
+    "14",
+    "23",
+    "53",
+    "56",
+    "57",
+    "60"
   ],
   "acumulado": true,
-  "valorEstimadoProximoConcurso": 95000000,
-  "dataProximoConcurso": "15/09/2026",
+  "valorEstimadoProximoConcurso": 102000000,
+  "dataProximoConcurso": "17/09/2026",
   "ganhadoresSena": 0,
   "valorPremioSena": 0
 }
